@@ -5,11 +5,7 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Handle client-side routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# SPA redirects handled by _redirects file
 
 [dev]
   command = "npm run dev"
