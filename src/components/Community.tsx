@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Shield, Heart, MessageCircle } from "lucide-react";
+import { WaitlistForm } from "./WaitlistForm";
 
 const Community = () => {
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const testimonials = [
     {
       quote: "Finally, a space where we don't have to explain why we're both exhausted and grateful at the same time.",
@@ -25,7 +28,7 @@ const Community = () => {
             A Safe Community That <span className="text-accent">Gets It</span>
           </h2>
           <p className="text-xl text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Connect with other couples navigating serious illness together. 
+            Connect with other couples navigating serious illness together.
             No toxic positivity. No judgment. Just real understanding.
           </p>
         </div>
@@ -76,11 +79,22 @@ const Community = () => {
         </div>
 
         <div className="text-center">
-          <Button variant="gentle" size="lg" className="text-base px-8 py-4">
+          <Button
+            variant="gentle"
+            size="lg"
+            className="text-base px-8 py-4"
+            onClick={() => setIsWaitlistOpen(true)}
+          >
             Join Our Community
           </Button>
         </div>
       </div>
+
+      <WaitlistForm
+        isOpen={isWaitlistOpen}
+        onClose={() => setIsWaitlistOpen(false)}
+        source="community"
+      />
     </section>
   );
 };

@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { WaitlistForm } from "./WaitlistForm";
+
 const Footer = () => {
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   return (
     <footer className="bg-footer-bg py-12">
       <div className="container mx-auto px-6">
@@ -8,26 +12,32 @@ const Footer = () => {
               nuvori.
             </div>
             <p className="text-foreground/70 leading-relaxed max-w-md">
-              Helping caregiving couples rebuild emotional intimacy, 
+              Helping caregiving couples rebuild emotional intimacy,
               reduce resentment, and feel like a team again.
             </p>
           </div>
-          
+
           <div className="space-y-4">
             <h4 className="font-medium text-foreground">Connect</h4>
             <div className="space-y-2">
-              <a href="#" className="block text-foreground/70 hover:text-foreground transition-colors">
+              <button
+                onClick={() => setIsWaitlistOpen(true)}
+                className="block text-foreground/70 hover:text-foreground transition-colors text-left"
+              >
                 Join Waitlist
-              </a>
-              <a href="#" className="block text-foreground/70 hover:text-foreground transition-colors">
+              </button>
+              <button
+                onClick={() => setIsWaitlistOpen(true)}
+                className="block text-foreground/70 hover:text-foreground transition-colors text-left"
+              >
                 Book a Call
-              </a>
-              <a href="#" className="block text-foreground/70 hover:text-foreground transition-colors">
+              </button>
+              <a href="#community" className="block text-foreground/70 hover:text-foreground transition-colors">
                 Community
               </a>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <h4 className="font-medium text-foreground">Support</h4>
             <div className="space-y-2">
@@ -43,13 +53,19 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="border-t border-foreground/10 mt-8 pt-8 text-center">
           <p className="text-sm text-foreground/60">
             © 2024 nuvori. Built with love for couples who need it most.
           </p>
         </div>
       </div>
+
+      <WaitlistForm
+        isOpen={isWaitlistOpen}
+        onClose={() => setIsWaitlistOpen(false)}
+        source="footer"
+      />
     </footer>
   );
 };

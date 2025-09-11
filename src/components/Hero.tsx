@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { WaitlistForm } from "./WaitlistForm";
 
 const Hero = () => {
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   return (
     <section className="min-h-[80vh] bg-gentle-gradient relative overflow-hidden">
       <div className="container mx-auto px-6 py-20">
@@ -28,10 +31,20 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="gentle" size="lg" className="text-base px-8 py-4">
+              <Button
+                variant="gentle"
+                size="lg"
+                className="text-base px-8 py-4"
+                onClick={() => setIsWaitlistOpen(true)}
+              >
                 Join the Waitlist
               </Button>
-              <Button variant="soft" size="lg" className="text-base px-8 py-4">
+              <Button
+                variant="soft"
+                size="lg"
+                className="text-base px-8 py-4"
+                onClick={() => setIsWaitlistOpen(true)}
+              >
                 Share Your Story
               </Button>
             </div>
@@ -45,7 +58,7 @@ const Hero = () => {
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-soft">
               <img
-                src="/placeholder.svg"
+                src="/carousel_page_8_img_1.png"
                 alt="A couple holding hands, showing emotional connection and support during difficult times"
                 className="w-full h-full object-cover"
               />
@@ -55,6 +68,12 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      <WaitlistForm
+        isOpen={isWaitlistOpen}
+        onClose={() => setIsWaitlistOpen(false)}
+        source="hero"
+      />
     </section>
   );
 };

@@ -6,6 +6,7 @@ import GetLifeBack from "@/components/GetLifeBack";
 import Community from "@/components/Community";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { WaitlistAdmin } from "@/components/WaitlistAdmin";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
         <CTA />
       </main>
       <Footer />
+      <WaitlistAdmin />
     </div>
   );
 };
