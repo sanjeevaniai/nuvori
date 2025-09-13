@@ -27,16 +27,18 @@ const CTA = () => {
               <Button
                 variant="gentle"
                 size="lg"
-                className="text-base px-8 py-4"
+                className="text-base px-8 py-4 btn btn-primary"
                 onClick={() => setIsWaitlistOpen(true)}
+                aria-label="Join the Nuvori waitlist"
               >
                 Join the Waitlist
               </Button>
               <Button
                 variant="soft"
                 size="lg"
-                className="text-base px-8 py-4"
-                onClick={() => setIsWaitlistOpen(true)}
+                className="text-base px-8 py-4 btn btn-secondary"
+                onClick={() => alert("Call booking coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to schedule a call.")}
+                aria-label="Book a 15-minute call"
               >
                 Book a 15-Minute Call
               </Button>

@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { supabase, type WaitlistEntry } from "@/lib/supabase"
 import { CheckCircle, Loader2 } from "lucide-react"
+import { emailService } from "@/lib/emailService"
 
 interface WaitlistFormProps {
     isOpen: boolean
@@ -29,49 +29,25 @@ export const WaitlistForm = ({ isOpen, onClose, source = "waitlist" }: WaitlistF
         setError("")
 
         try {
-            // Check if email already exists in local storage
-            const existingEntries = JSON.parse(localStorage.getItem('waitlist_entries') || '[]')
-            const emailExists = existingEntries.some((entry: any) =>
-                entry.email.toLowerCase() === formData.email.trim().toLowerCase()
+            // Use the real email service
+            const result = await emailService.addToWaitlist(
+                formData.name.trim(),
+                formData.email.trim(),
+                source
             )
 
-            if (emailExists) {
-                setError("This email is already on our waitlist!")
-                setIsLoading(false)
-                return
+            if (result.success) {
+                setIsSuccess(true)
+                setFormData({ name: "", email: "" })
+
+                // Auto close after 3 seconds
+                setTimeout(() => {
+                    onClose()
+                    setIsSuccess(false)
+                }, 3000)
+            } else {
+                setError(result.message)
             }
-
-            // Create new entry
-            const newEntry = {
-                id: Date.now(), // Simple ID generation
-                name: formData.name.trim(),
-                email: formData.email.trim().toLowerCase(),
-                source: source,
-                created_at: new Date().toISOString()
-            }
-
-            // Save to local storage
-            const updatedEntries = [...existingEntries, newEntry]
-            localStorage.setItem('waitlist_entries', JSON.stringify(updatedEntries))
-
-            // Also try to save to Supabase if available (optional)
-            try {
-                await supabase
-                    .from('waitlist_entries')
-                    .insert([newEntry])
-            } catch (supabaseError) {
-                // Supabase error is ignored - local storage is primary
-                console.log('Supabase not available, using local storage only')
-            }
-
-            setIsSuccess(true)
-            setFormData({ name: "", email: "" })
-
-            // Auto close after 3 seconds
-            setTimeout(() => {
-                onClose()
-                setIsSuccess(false)
-            }, 3000)
 
         } catch (err) {
             setError("Something went wrong. Please try again.")
@@ -102,7 +78,7 @@ export const WaitlistForm = ({ isOpen, onClose, source = "waitlist" }: WaitlistF
                     </DialogTitle>
                     <DialogDescription className="text-center">
                         {isSuccess
-                            ? "Thank you for joining us. We'll be in touch soon!"
+                            ? "💛 Thanks for joining — check your email for a short 2-minute survey."
                             : "Be the first to know when nuvori launches. Help us build something that truly serves couples like you."
                         }
                     </DialogDescription>
@@ -151,8 +127,9 @@ export const WaitlistForm = ({ isOpen, onClose, source = "waitlist" }: WaitlistF
 
                         <Button
                             type="submit"
-                            className="w-full text-base py-3"
+                            className="w-full text-base py-3 btn btn-primary"
                             disabled={isLoading || !formData.name.trim() || !formData.email.trim()}
+                            aria-label="Join the Nuvori waitlist"
                         >
                             {isLoading ? (
                                 <>

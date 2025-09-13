@@ -5,7 +5,7 @@ import { WaitlistForm } from "./WaitlistForm";
 const Header = () => {
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   return (
-    <header className="w-full bg-background/80 backdrop-blur-md border-b border-border/50 sticky top-0 z-50">
+    <header className="navbar w-full bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="font-sans text-2xl font-normal text-foreground">
@@ -31,14 +31,18 @@ const Header = () => {
             <Button
               variant="soft"
               size="sm"
-              onClick={() => setIsWaitlistOpen(true)}
+              className="btn btn-secondary"
+              onClick={() => alert("Call booking coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to schedule a call.")}
+              aria-label="Book a 15-minute call"
             >
               Book a Call
             </Button>
             <Button
               variant="gentle"
               size="sm"
+              className="btn btn-primary"
               onClick={() => setIsWaitlistOpen(true)}
+              aria-label="Join the Nuvori waitlist"
             >
               Join Waitlist
             </Button>

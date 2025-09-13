@@ -11,7 +11,7 @@ const Hero = () => {
           {/* Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <h1 className="font-sans text-4xl lg:text-5xl xl:text-6xl leading-tight text-foreground">
+              <h1 className="font-sans text-4xl lg:text-5xl xl:text-6xl leading-tight text-foreground" style={{ fontWeight: 900, lineHeight: '1.1' }}>
                 We're surviving cancer,{" "}
                 <span className="text-accent">but we're drifting apart.</span>
               </h1>
@@ -34,16 +34,18 @@ const Hero = () => {
               <Button
                 variant="gentle"
                 size="lg"
-                className="text-base px-8 py-4"
+                className="text-base px-8 py-4 btn btn-primary"
                 onClick={() => setIsWaitlistOpen(true)}
+                aria-label="Join the Nuvori waitlist"
               >
                 Join the Waitlist
               </Button>
               <Button
                 variant="soft"
                 size="lg"
-                className="text-base px-8 py-4"
-                onClick={() => setIsWaitlistOpen(true)}
+                className="text-base px-8 py-4 btn btn-secondary"
+                onClick={() => alert("Share Your Story form coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to hear your story.")}
+                aria-label="Share your story via a short form"
               >
                 Share Your Story
               </Button>
@@ -59,7 +61,7 @@ const Hero = () => {
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-soft">
               <img
                 src="/carousel_page_8_img_1.png"
-                alt="A couple holding hands, showing emotional connection and support during difficult times"
+                alt="Two partners holding hands; caregiving is hard, and they're choosing each other."
                 className="w-full h-full object-cover"
               />
             </div>

@@ -45,8 +45,9 @@ const GetLifeBack = () => {
             <Button
               variant="gentle"
               size="lg"
-              className="text-base px-8 py-4"
+              className="text-base px-8 py-4 btn btn-primary"
               onClick={() => setIsWaitlistOpen(true)}
+              aria-label="Learn how nuvori works"
             >
               Learn How It Works
             </Button>

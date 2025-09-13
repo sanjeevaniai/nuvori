@@ -26,12 +26,14 @@ const Footer = () => {
               <button
                 onClick={() => setIsWaitlistOpen(true)}
                 className="block text-foreground/70 hover:text-foreground transition-colors text-left"
+                aria-label="Join the Nuvori waitlist"
               >
                 Join Waitlist
               </button>
               <button
-                onClick={() => setIsWaitlistOpen(true)}
+                onClick={() => alert("Call booking coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to schedule a call.")}
                 className="block text-foreground/70 hover:text-foreground transition-colors text-left"
+                aria-label="Book a 15-minute call"
               >
                 Book a Call
               </button>
