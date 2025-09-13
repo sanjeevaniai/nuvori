@@ -10,6 +10,9 @@ const Footer = () => {
           <div className="md:col-span-2 space-y-4">
             <div className="font-sans text-2xl text-foreground">
               nuvori.
+              <div className="text-sm text-foreground/60 font-normal">
+                There is no We without Us
+              </div>
             </div>
             <p className="text-foreground/70 leading-relaxed max-w-md">
               Helping caregiving couples rebuild emotional intimacy,

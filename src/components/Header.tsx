@@ -10,6 +10,9 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="font-sans text-2xl font-normal text-foreground">
             nuvori.
+            <div className="text-sm text-foreground/60 font-normal">
+              There is no We without Us
+            </div>
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
