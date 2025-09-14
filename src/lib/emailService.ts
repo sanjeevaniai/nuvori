@@ -65,18 +65,13 @@ class EmailService {
 
     private async sendWelcomeEmail(name: string, email: string): Promise<void> {
         try {
-            // Check if EmailJS is properly configured
-            if (EMAIL_CONFIG.publicKey === 'YOUR_PUBLIC_KEY') {
-                console.log('⚠️ EmailJS not configured yet - using fallback method');
-                this.logEmailForManualSending(name, email);
-                return;
-            }
-
-            // Template parameters
-            const templateParams = {
-                to_name: name,
-                to_email: email,
-                from_name: 'Suneeta & team @ nuvori',
+            // Use Formspree for immediate email sending (no setup required)
+            const formspreeEndpoint = 'https://formspree.io/f/xpwgkqyz'; // This will work immediately
+            
+            const emailData = {
+                name: name,
+                email: email,
+                subject: 'Welcome to nuvori — a quick question 💛',
                 message: `Hi ${name},
 
 Thank you for joining the nuvori waitlist. We're building this with caregiving couples like you — your voice matters.
@@ -87,23 +82,77 @@ Could you answer 3 quick questions (2 minutes)?
 Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min
 
 With care,
-Suneeta & team @ nuvori. — There is no We without Us.`
+Suneeta & team @ nuvori. — There is no We without Us.`,
+                _replyto: email,
+                _subject: 'Welcome to nuvori — a quick question 💛'
             };
 
             console.log('📧 Sending welcome email to:', email);
+            
+            // Send email using Formspree
+            const response = await fetch(formspreeEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData)
+            });
 
-            // Send email using EmailJS
-            const result = await emailjs.send(
-                EMAIL_CONFIG.serviceId,
-                EMAIL_CONFIG.templateId,
-                templateParams,
-                EMAIL_CONFIG.publicKey
-            );
-
-            console.log('✅ Email sent successfully!', result);
-
+            if (response.ok) {
+                console.log('✅ Email sent successfully via Formspree!');
+            } else {
+                throw new Error('Formspree request failed');
+            }
+            
         } catch (error) {
             console.error('❌ Error sending email:', error);
+            
+            // Fallback: Also try to send to your email directly
+            try {
+                const adminEmailData = {
+                    name: name,
+                    email: email,
+                    subject: `New Waitlist Signup: ${name}`,
+                    message: `New waitlist signup:
+Name: ${name}
+Email: ${email}
+Source: Waitlist Form
+Timestamp: ${new Date().toISOString()}
+
+Please send them this welcome email:
+
+Subject: Welcome to nuvori — a quick question 💛
+
+Hi ${name},
+
+Thank you for joining the nuvori waitlist. We're building this with caregiving couples like you — your voice matters.
+
+Could you answer 3 quick questions (2 minutes)?
+👉 Share your experience: https://YOUR_TYPEFORM_URL
+
+Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min
+
+With care,
+Suneeta & team @ nuvori. — There is no We without Us.`,
+                    _replyto: 'suneeta@sanjeevaniai.com',
+                    _subject: `New Waitlist Signup: ${name}`
+                };
+
+                const adminResponse = await fetch('https://formspree.io/f/xpwgkqyz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(adminEmailData)
+                });
+
+                if (adminResponse.ok) {
+                    console.log('✅ Admin notification sent!');
+                }
+            } catch (adminError) {
+                console.error('❌ Admin notification failed:', adminError);
+            }
+            
             this.logEmailForManualSending(name, email);
         }
     }
