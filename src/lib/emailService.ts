@@ -1,5 +1,8 @@
 // Email service for waitlist signups
-// This will store data locally AND send a real email
+// This will store data locally AND send a real email using EmailJS
+
+import emailjs from '@emailjs/browser';
+import { EMAIL_CONFIG } from './emailConfig';
 
 interface WaitlistEntry {
     id: string;
@@ -61,15 +64,20 @@ class EmailService {
     }
 
     private async sendWelcomeEmail(name: string, email: string): Promise<void> {
-        // For now, we'll simulate sending an email
-        // In production, you would integrate with a real email service
+        try {
+            // Check if EmailJS is properly configured
+            if (EMAIL_CONFIG.publicKey === 'YOUR_PUBLIC_KEY') {
+                console.log('⚠️ EmailJS not configured yet - using fallback method');
+                this.logEmailForManualSending(name, email);
+                return;
+            }
 
-        console.log('📧 Sending welcome email to:', email);
-        console.log('📧 Email content:');
-        console.log(`
-Subject: Welcome to nuvori — a quick question 💛
-
-Hi ${name},
+            // Template parameters
+            const templateParams = {
+                to_name: name,
+                to_email: email,
+                from_name: 'Suneeta & team @ nuvori',
+                message: `Hi ${name},
 
 Thank you for joining the nuvori waitlist. We're building this with caregiving couples like you — your voice matters.
 
@@ -79,13 +87,45 @@ Could you answer 3 quick questions (2 minutes)?
 Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min
 
 With care,
-Suneeta & team @ nuvori. — There is no We without Us.
-    `);
+Suneeta & team @ nuvori. — There is no We without Us.`
+            };
 
-        // Simulate email sending delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('📧 Sending welcome email to:', email);
 
-        console.log('✅ Email sent successfully!');
+            // Send email using EmailJS
+            const result = await emailjs.send(
+                EMAIL_CONFIG.serviceId,
+                EMAIL_CONFIG.templateId,
+                templateParams,
+                EMAIL_CONFIG.publicKey
+            );
+
+            console.log('✅ Email sent successfully!', result);
+
+        } catch (error) {
+            console.error('❌ Error sending email:', error);
+            this.logEmailForManualSending(name, email);
+        }
+    }
+
+    private logEmailForManualSending(name: string, email: string): void {
+        console.log('📧 EmailJS not configured - Email content for manual sending:');
+        console.log('='.repeat(60));
+        console.log(`TO: ${email}`);
+        console.log(`SUBJECT: Welcome to nuvori — a quick question 💛`);
+        console.log('');
+        console.log(`Hi ${name},`);
+        console.log('');
+        console.log('Thank you for joining the nuvori waitlist. We\'re building this with caregiving couples like you — your voice matters.');
+        console.log('');
+        console.log('Could you answer 3 quick questions (2 minutes)?');
+        console.log('👉 Share your experience: https://YOUR_TYPEFORM_URL');
+        console.log('');
+        console.log('Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min');
+        console.log('');
+        console.log('With care,');
+        console.log('Suneeta & team @ nuvori. — There is no We without Us.');
+        console.log('='.repeat(60));
     }
 
     private getStoredEntries(): WaitlistEntry[] {
