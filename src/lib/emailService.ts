@@ -64,97 +64,48 @@ class EmailService {
     }
 
     private async sendWelcomeEmail(name: string, email: string): Promise<void> {
-        try {
-            // Use Formspree for immediate email sending (no setup required)
-            const formspreeEndpoint = 'https://formspree.io/f/xpwgkqyz'; // This will work immediately
-            
-            const emailData = {
-                name: name,
-                email: email,
-                subject: 'Welcome to nuvori — a quick question 💛',
-                message: `Hi ${name},
-
-Thank you for joining the nuvori waitlist. We're building this with caregiving couples like you — your voice matters.
-
-Could you answer 3 quick questions (2 minutes)?
-👉 Share your experience: https://YOUR_TYPEFORM_URL
-
-Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min
-
-With care,
-Suneeta & team @ nuvori. — There is no We without Us.`,
-                _replyto: email,
-                _subject: 'Welcome to nuvori — a quick question 💛'
-            };
-
-            console.log('📧 Sending welcome email to:', email);
-            
-            // Send email using Formspree
-            const response = await fetch(formspreeEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(emailData)
-            });
-
-            if (response.ok) {
-                console.log('✅ Email sent successfully via Formspree!');
-            } else {
-                throw new Error('Formspree request failed');
-            }
-            
-        } catch (error) {
-            console.error('❌ Error sending email:', error);
-            
-            // Fallback: Also try to send to your email directly
-            try {
-                const adminEmailData = {
-                    name: name,
-                    email: email,
-                    subject: `New Waitlist Signup: ${name}`,
-                    message: `New waitlist signup:
-Name: ${name}
-Email: ${email}
-Source: Waitlist Form
-Timestamp: ${new Date().toISOString()}
-
-Please send them this welcome email:
-
-Subject: Welcome to nuvori — a quick question 💛
-
-Hi ${name},
-
-Thank you for joining the nuvori waitlist. We're building this with caregiving couples like you — your voice matters.
-
-Could you answer 3 quick questions (2 minutes)?
-👉 Share your experience: https://YOUR_TYPEFORM_URL
-
-Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min
-
-With care,
-Suneeta & team @ nuvori. — There is no We without Us.`,
-                    _replyto: 'suneeta@sanjeevaniai.com',
-                    _subject: `New Waitlist Signup: ${name}`
-                };
-
-                const adminResponse = await fetch('https://formspree.io/f/xpwgkqyz', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(adminEmailData)
-                });
-
-                if (adminResponse.ok) {
-                    console.log('✅ Admin notification sent!');
-                }
-            } catch (adminError) {
-                console.error('❌ Admin notification failed:', adminError);
-            }
-            
-            this.logEmailForManualSending(name, email);
-        }
+        // For immediate campaign launch, we'll use a simple approach
+        // This logs the email content and stores it for easy access
+        
+        console.log('📧 NEW WAITLIST SIGNUP - ACTION REQUIRED!');
+        console.log('='.repeat(60));
+        console.log(`👤 Name: ${name}`);
+        console.log(`📧 Email: ${email}`);
+        console.log(`⏰ Time: ${new Date().toLocaleString()}`);
+        console.log('');
+        console.log('📝 EMAIL TO SEND:');
+        console.log('='.repeat(40));
+        console.log(`TO: ${email}`);
+        console.log(`SUBJECT: Welcome to nuvori — a quick question 💛`);
+        console.log('');
+        console.log(`Hi ${name},`);
+        console.log('');
+        console.log('Thank you for joining the nuvori waitlist. We\'re building this with caregiving couples like you — your voice matters.');
+        console.log('');
+        console.log('Could you answer 3 quick questions (2 minutes)?');
+        console.log('👉 Share your experience: https://YOUR_TYPEFORM_URL');
+        console.log('');
+        console.log('Prefer to talk? Book a 15-minute call: https://calendly.com/YOUR_HANDLE/15min');
+        console.log('');
+        console.log('With care,');
+        console.log('Suneeta & team @ nuvori. — There is no We without Us.');
+        console.log('='.repeat(60));
+        
+        // Store in localStorage for easy access
+        const emailLog = {
+            id: Date.now(),
+            name,
+            email,
+            timestamp: new Date().toISOString(),
+            status: 'pending_email'
+        };
+        
+        const existingLogs = JSON.parse(localStorage.getItem('nuvori_email_logs') || '[]');
+        existingLogs.push(emailLog);
+        localStorage.setItem('nuvori_email_logs', JSON.stringify(existingLogs));
+        
+        console.log('✅ Email details saved to localStorage for manual sending');
+        console.log('📊 Total signups:', existingLogs.length);
     }
 
     private logEmailForManualSending(name: string, email: string): void {
