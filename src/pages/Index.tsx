@@ -6,11 +6,13 @@ import GetLifeBack from "@/components/GetLifeBack";
 import Community from "@/components/Community";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import { CustomCursor } from "@/components/CustomCursor";
 // import { WaitlistAdmin } from "@/components/WaitlistAdmin";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <CustomCursor />
       <Header />
       <main>
         <Hero />

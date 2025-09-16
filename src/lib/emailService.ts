@@ -66,7 +66,7 @@ class EmailService {
     private async sendWelcomeEmail(name: string, email: string): Promise<void> {
         // For immediate campaign launch, we'll use a simple approach
         // This logs the email content and stores it for easy access
-        
+
         console.log('📧 NEW WAITLIST SIGNUP - ACTION REQUIRED!');
         console.log('='.repeat(60));
         console.log(`👤 Name: ${name}`);
@@ -90,7 +90,7 @@ class EmailService {
         console.log('With care,');
         console.log('Suneeta & team @ nuvori. — There is no We without Us.');
         console.log('='.repeat(60));
-        
+
         // Store in localStorage for easy access
         const emailLog = {
             id: Date.now(),
@@ -99,11 +99,11 @@ class EmailService {
             timestamp: new Date().toISOString(),
             status: 'pending_email'
         };
-        
+
         const existingLogs = JSON.parse(localStorage.getItem('nuvori_email_logs') || '[]');
         existingLogs.push(emailLog);
         localStorage.setItem('nuvori_email_logs', JSON.stringify(existingLogs));
-        
+
         console.log('✅ Email details saved to localStorage for manual sending');
         console.log('📊 Total signups:', existingLogs.length);
     }

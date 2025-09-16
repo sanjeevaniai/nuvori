@@ -195,11 +195,31 @@
     backdrop-filter: saturate(1.2) blur(6px);
   }
 
-  /* Success message styling */
-  .success-msg {
-    display: none;
-    margin-top: 0.75rem;
-    color: var(--ink);
-    font-weight: 500;
-  }
+         /* Success message styling */
+         .success-msg {
+           display: none;
+           margin-top: 0.75rem;
+           color: var(--ink);
+           font-weight: 500;
+         }
+
+         /* Custom cursor styling */
+         * {
+           cursor: none !important;
+         }
+
+         /* Ensure clickable elements still work */
+         button, a, input, textarea, select {
+           cursor: none !important;
+         }
+
+         /* Custom cursor animations */
+         @keyframes heartFloat {
+           0%, 100% { transform: translateY(0px) rotate(0deg); }
+           50% { transform: translateY(-2px) rotate(2deg); }
+         }
+
+         .custom-cursor-heart {
+           animation: heartFloat 2s ease-in-out infinite;
+         }
 }
