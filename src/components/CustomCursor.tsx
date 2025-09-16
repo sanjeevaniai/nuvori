@@ -29,6 +29,10 @@ export const CustomCursor = () => {
     let cursorY = 0;
     let isVisible = false;
 
+    // Force hide default cursor on the entire document
+    document.body.style.cursor = 'none';
+    document.documentElement.style.cursor = 'none';
+
     // Heart trail animation
     const animateTrail = () => {
       const now = Date.now();
@@ -104,19 +108,30 @@ export const CustomCursor = () => {
       }
     };
 
-    // Mouse enter/leave handlers
-    const handleMouseEnter = () => {
-      isVisible = true;
+    // Mouse enter/leave handlers for the page content
+    const handleMouseEnter = (e: MouseEvent) => {
+      // Only show cursor when over page content, not outside
+      if (e.target && (e.target as Element).closest('body')) {
+        isVisible = true;
+      }
     };
 
-    const handleMouseLeave = () => {
-      isVisible = false;
+    const handleMouseLeave = (e: MouseEvent) => {
+      // Hide cursor when leaving the page area
+      if (!(e.target && (e.target as Element).closest('body'))) {
+        isVisible = false;
+      }
     };
 
     // Add event listeners
     document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseenter', handleMouseEnter);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter, true);
+    document.addEventListener('mouseleave', handleMouseLeave, true);
+    
+    // Also hide cursor when mouse leaves the viewport
+    document.addEventListener('mouseleave', () => {
+      isVisible = false;
+    });
 
     // Start animation
     animateTrail();
@@ -124,11 +139,14 @@ export const CustomCursor = () => {
     // Cleanup
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseenter', handleMouseEnter);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter, true);
+      document.removeEventListener('mouseleave', handleMouseLeave, true);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      // Restore default cursor
+      document.body.style.cursor = '';
+      document.documentElement.style.cursor = '';
     };
   }, []);
 
