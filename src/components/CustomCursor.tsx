@@ -32,6 +32,20 @@ export const CustomCursor = () => {
     // Force hide default cursor on the entire document
     document.body.style.cursor = 'none';
     document.documentElement.style.cursor = 'none';
+    
+    // Also hide cursor on all elements
+    const hideCursorOnAllElements = () => {
+      const allElements = document.querySelectorAll('*');
+      allElements.forEach(el => {
+        (el as HTMLElement).style.cursor = 'none';
+      });
+    };
+    
+    // Initial hide
+    hideCursorOnAllElements();
+    
+    // Periodically re-hide cursor on any new elements
+    const cursorHideInterval = setInterval(hideCursorOnAllElements, 100);
 
     // Heart trail animation
     const animateTrail = () => {
@@ -144,6 +158,8 @@ export const CustomCursor = () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      // Clear the cursor hiding interval
+      clearInterval(cursorHideInterval);
       // Restore default cursor
       document.body.style.cursor = '';
       document.documentElement.style.cursor = '';

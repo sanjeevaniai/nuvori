@@ -204,11 +204,16 @@
          }
 
          /* Custom cursor styling - hide default cursor everywhere */
+         * {
+           cursor: none !important;
+         }
+
+         /* Force hide cursor on all elements and pseudo-elements */
          *, *::before, *::after {
            cursor: none !important;
          }
 
-         /* Hide cursor on all elements */
+         /* Hide cursor on all HTML elements */
          html, body, div, span, applet, object, iframe,
          h1, h2, h3, h4, h5, h6, p, blockquote, pre,
          a, abbr, acronym, address, big, cite, code,
@@ -224,7 +229,22 @@
          }
 
          /* Ensure the page itself doesn't show cursor */
-         body {
+         html, body {
+           cursor: none !important;
+         }
+
+         /* Hide cursor on the root element */
+         #root {
+           cursor: none !important;
+         }
+
+         /* Override any cursor styles that might be set by other CSS */
+         *:hover, *:focus, *:active {
+           cursor: none !important;
+         }
+
+         /* Ensure no cursor shows on any interactive elements */
+         button, a, input, textarea, select, [role="button"] {
            cursor: none !important;
          }
 
