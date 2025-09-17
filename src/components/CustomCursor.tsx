@@ -29,6 +29,21 @@ export const CustomCursor = () => {
     let cursorY = 0;
     let isVisible = false;
 
+    // Inject global CSS to force hide cursor
+    const style = document.createElement('style');
+    style.textContent = `
+      *, *::before, *::after {
+        cursor: none !important;
+      }
+      html, body, #root {
+        cursor: none !important;
+      }
+      *:hover, *:focus, *:active {
+        cursor: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
     // Force hide default cursor on the entire document
     document.body.style.cursor = 'none';
     document.documentElement.style.cursor = 'none';
@@ -39,13 +54,35 @@ export const CustomCursor = () => {
       allElements.forEach(el => {
         (el as HTMLElement).style.cursor = 'none';
       });
+      
+      // Also force hide on document and body again
+      document.body.style.cursor = 'none';
+      document.documentElement.style.cursor = 'none';
+      
+      // Hide cursor on window
+      if (window) {
+        (window as any).style = (window as any).style || {};
+        (window as any).style.cursor = 'none';
+      }
     };
     
     // Initial hide
     hideCursorOnAllElements();
     
-    // Periodically re-hide cursor on any new elements
-    const cursorHideInterval = setInterval(hideCursorOnAllElements, 100);
+    // More frequent re-hide cursor on any new elements
+    const cursorHideInterval = setInterval(hideCursorOnAllElements, 50);
+    
+    // Watch for new elements being added to the DOM
+    const observer = new MutationObserver(() => {
+      hideCursorOnAllElements();
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
 
     // Heart trail animation
     const animateTrail = () => {
@@ -160,6 +197,12 @@ export const CustomCursor = () => {
       }
       // Clear the cursor hiding interval
       clearInterval(cursorHideInterval);
+      // Disconnect the observer
+      observer.disconnect();
+      // Remove the injected style
+      if (style && style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
       // Restore default cursor
       document.body.style.cursor = '';
       document.documentElement.style.cursor = '';
