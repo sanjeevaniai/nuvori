@@ -12,48 +12,53 @@ const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h1 className="font-sans text-4xl lg:text-5xl xl:text-6xl leading-tight text-foreground" style={{ fontWeight: 900, lineHeight: '1.1' }}>
-                We're surviving cancer,{" "}
-                <span className="text-accent">but we're drifting apart.</span>
+                We survived cancer—{" "}
+                <span className="text-accent">but lost us along the way.</span>
               </h1>
 
               <p className="text-xl lg:text-2xl text-foreground/80 font-light leading-relaxed">
-                Join other couples rebuilding what illness almost took away.
+                Surviving was hard. Staying close after has been even harder.
               </p>
 
               <div className="bg-card/60 backdrop-blur-sm p-6 rounded-xl border border-border/30 shadow-soft">
                 <p className="font-sans text-lg lg:text-xl text-accent mb-2">
-                  nuvori helps caregiving couples feel like a team again.
+                  Nuvori helps caregiving couples reconnect.
                 </p>
                 <p className="text-foreground/70">
-                  Through gentle rituals, AI-assisted support, and a community that truly understands.
+                  Through gentle rituals, smart support, and a community that truly understands.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                variant="gentle"
-                size="lg"
-                className="text-base px-8 py-4 btn btn-primary"
-                onClick={() => setIsWaitlistOpen(true)}
-                aria-label="Join the Nuvori waitlist"
-              >
-                Join the Waitlist
-              </Button>
-              <Button
-                variant="soft"
-                size="lg"
-                className="text-base px-8 py-4 btn btn-secondary"
-                onClick={() => alert("Share Your Story form coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to hear your story.")}
-                aria-label="Share your story via a short form"
-              >
-                Share Your Story
-              </Button>
+            <div className="space-y-4">
+              <p className="text-lg text-foreground/80 font-medium">
+                Join other couples rebuilding what illness almost took away.
+              </p>
+              <p className="text-base text-accent font-semibold">
+                A stronger "us" starts here.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  variant="gentle"
+                  size="lg"
+                  className="text-base px-8 py-4 btn btn-primary"
+                  onClick={() => setIsWaitlistOpen(true)}
+                  aria-label="Join the Nuvori waitlist"
+                >
+                  Join the waitlist
+                </Button>
+                <Button
+                  variant="soft"
+                  size="lg"
+                  className="text-base px-8 py-4 btn btn-secondary"
+                  onClick={() => alert("Share Your Story form coming soon! For now, please use the 'Join the Waitlist' button and we'll reach out to hear your story.")}
+                  aria-label="Share your story via a short form"
+                >
+                  Share Your Story
+                </Button>
+              </div>
             </div>
-
-            <p className="text-sm text-foreground/60">
-              Help us build something that truly serves couples like you.
-            </p>
           </div>
 
           {/* Image */}
