@@ -13,7 +13,7 @@ const Hero = () => {
             <div className="space-y-6">
               <h1 className="font-sans text-4xl lg:text-5xl xl:text-6xl leading-tight text-foreground" style={{ fontWeight: 900, lineHeight: '1.1' }}>
                 We survived cancer{" "}
-                <span className="text-accent">but lost us along the way.</span>
+                <span className="text-accent">but lost us along the way...</span>
               </h1>
 
               <p className="text-xl lg:text-2xl text-foreground/80 font-light leading-relaxed">
